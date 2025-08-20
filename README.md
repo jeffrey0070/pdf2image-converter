@@ -1,26 +1,43 @@
 # PDF to Image Converter
 
-Simple desktop app to convert PDF files to PNG images.
-
-## Setup
-
-1. Install Python 3.8+
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
+Convert PDF files to PNG images. Works as desktop app or right-click context menu.
 
 ## Usage
 
-1. Run the app:
-   ```
-   python main.py
-   ```
-
-2. Click "Browse PDF" to select a PDF file
-
+### Desktop Mode
+1. Double-click `PDF2Image.exe`
+2. Browse and select PDF file
 3. Click "Convert PDF to Images"
 
-## Output
+### Context Menu Mode
+1. **Setup once**: Right-click `install.bat` → "Run as administrator"
+2. **Use**: Right-click any PDF → "Convert to Images"
+3. **Remove**: Right-click `uninstall.bat` → "Run as administrator"
 
-Images are automatically saved as `page_001.png`, `page_002.png`, etc. in `C:\Temp` folder.
+## Output
+Images saved as `filename_page_001.png` in same folder as PDF.
+
+## Files
+- `PDF2Image.exe` - Main application  
+- `install.bat` - Add context menu
+- `uninstall.bat` - Remove context menu
+
+## Requirements
+- Windows
+- Admin privileges (context menu only)
+- No Python needed
+
+---
+
+## For Developers
+
+### Build
+```bash
+pip install -r requirements.txt
+build.bat
+```
+
+### Files
+- `main.py` - Source code
+- `requirements.txt` - Dependencies  
+- `build.bat` - Build script
