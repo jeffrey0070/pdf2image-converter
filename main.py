@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import os
+import sys
 import fitz  # PyMuPDF
 from PIL import Image
 
@@ -11,9 +12,17 @@ class PDF2ImageConverter:
         self.root.geometry("400x200")
         
         self.pdf_path = None
-        self.output_folder = r"C:\Temp"
+        
+        # Check for command-line argument (context menu integration)
+        if len(sys.argv) > 1:
+            self.pdf_path = sys.argv[1]
         
         self.setup_ui()
+        
+        # Auto-convert if PDF provided via command line
+        if self.pdf_path:
+            # Schedule conversion to run after GUI is fully initialized
+            self.root.after(100, self.convert_pdf)
         
     def setup_ui(self):
         # PDF selection
@@ -21,11 +30,15 @@ class PDF2ImageConverter:
         self.pdf_button = tk.Button(self.root, text="Browse PDF", command=self.select_pdf)
         self.pdf_button.pack(pady=5)
         
-        self.pdf_label = tk.Label(self.root, text="No PDF selected", fg="gray")
+        # Update label based on whether PDF is pre-selected
+        if self.pdf_path:
+            self.pdf_label = tk.Label(self.root, text=os.path.basename(self.pdf_path), fg="black")
+        else:
+            self.pdf_label = tk.Label(self.root, text="No PDF selected", fg="gray")
         self.pdf_label.pack(pady=2)
         
         # Output info
-        tk.Label(self.root, text="Images will be saved to C:\\Temp", fg="blue").pack(pady=10)
+        tk.Label(self.root, text="Images will be saved to same folder as PDF", fg="blue").pack(pady=10)
         
         # Convert button
         self.convert_button = tk.Button(self.root, text="Convert PDF to Images", 
@@ -52,8 +65,18 @@ class PDF2ImageConverter:
             messagebox.showerror("Error", "Please select a PDF file")
             return
             
-        # Create C:\Temp if it doesn't exist
-        os.makedirs(self.output_folder, exist_ok=True)
+        # Validate file exists and is PDF
+        if not os.path.exists(self.pdf_path):
+            messagebox.showerror("Error", f"File not found: {self.pdf_path}")
+            return
+            
+        if not self.pdf_path.lower().endswith('.pdf'):
+            messagebox.showerror("Error", f"Not a PDF file: {self.pdf_path}")
+            return
+            
+        # Use same folder as PDF file
+        output_folder = os.path.dirname(self.pdf_path)
+        pdf_basename = os.path.splitext(os.path.basename(self.pdf_path))[0]
             
         try:
             self.status_label.config(text="Converting...", fg="orange")
@@ -69,13 +92,15 @@ class PDF2ImageConverter:
                 pix = page.get_pixmap(matrix=mat)
                 img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
                 
-                image_path = os.path.join(self.output_folder, f"page_{page_num + 1:03d}.png")
+                # Use PDF filename as prefix: filename_page_001.png
+                image_filename = f"{pdf_basename}_page_{page_num + 1:03d}.png"
+                image_path = os.path.join(output_folder, image_filename)
                 img.save(image_path, "PNG")
                 
             pdf_document.close()
                 
             self.status_label.config(text=f"Converted {page_count} pages successfully!", fg="green")
-            messagebox.showinfo("Success", f"Converted {page_count} pages to {self.output_folder}")
+            messagebox.showinfo("Success", f"Converted {page_count} pages to PDF folder")
             
         except Exception as e:
             self.status_label.config(text="Error occurred", fg="red")
