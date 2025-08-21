@@ -1,7 +1,7 @@
 # PyInstaller build artifacts
 build/
 dist/
-*.spec
+# Include PDF2Image.spec for build reproducibility
 
 # Python
 __pycache__/
