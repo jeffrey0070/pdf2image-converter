@@ -1,4 +1,4 @@
-PDF to Image Converter v2.0.1
+PDF to Image Converter v2.0.2
 
 USAGE:
 1. Double-click PDF2Image.exe
