@@ -8,7 +8,7 @@ from PIL import Image
 class PDF2ImageConverter:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("PDF to Image Converter v1.0.0 - Jeffrey Wang")
+        self.root.title("PDF to Image Converter v2.0.0 - Jeffrey Wang")
         self.root.geometry("450x280")
         self.root.minsize(450, 180)  # Set minimum size
         self.root.configure(bg="#ffffff")
@@ -84,16 +84,16 @@ class PDF2ImageConverter:
         tk.Label(main_frame, text="Select PDF File:", font=("Segoe UI", 10), 
                 bg="#ffffff", fg="#333333").pack(anchor="w", pady=(0, 8))
         
-        # Clickable drop zone rectangle
+        # Clickable drop zone rectangle (future: will support drag-drop functionality)
         self.drop_zone = tk.Frame(main_frame, bg="#f8f8f8", relief="solid", bd=1)
         self.drop_zone.pack(fill="x", pady=(0, 20))
         self.drop_zone.bind("<Button-1>", lambda e: self.select_pdf())
         
         # Text inside drop zone (shows filename when selected)
         if self.pdf_path:
-            display_text = f"Click here to browse or drag & drop PDF file\n\n{self.pdf_path}"
+            display_text = f"Click here to browse for PDF file\n\n{self.pdf_path}"
         else:
-            display_text = "Click here to browse or drag & drop PDF file"
+            display_text = "Click here to browse for PDF file"
             
         self.drop_text = tk.Label(self.drop_zone, text=display_text, 
                                  font=("Segoe UI", 9), bg="#f8f8f8", fg="#666666",
@@ -118,7 +118,7 @@ class PDF2ImageConverter:
         )
         if file_path:
             self.pdf_path = file_path
-            self.drop_text.config(text=f"Click here to browse or drag & drop PDF file\n\n{file_path}")
+            self.drop_text.config(text=f"Click here to browse for PDF file\n\n{file_path}")
             # Auto-resize window if needed for long filename
             self.root.update_idletasks()
             required_height = self.root.winfo_reqheight()
