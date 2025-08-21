@@ -20,7 +20,7 @@
 - **Ultra-minimal UI**: Drop zone + 3 other essential elements only
 - **Direct implementation**: Skip advanced architecture patterns
 
-### Current Status (v2.0.1)
+### Current Status (v2.0.2)
 - **Phase 1**: Context menu integration ✅
 - **Phase 2**: Ultra-minimal UI design ✅
 - **Performance optimization**: Lazy loading of heavy libraries ✅
