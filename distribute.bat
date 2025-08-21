@@ -3,8 +3,8 @@ echo ========================================
 echo PDF2Image Distribution Builder
 echo ========================================
 
-REM Read version from version.txt
-set /p VERSION=<version.txt
+REM Read version from version.py
+for /f "tokens=*" %%a in ('python -c "from version import __version__; print(__version__)"') do set VERSION=%%a
 echo Version: %VERSION%
 
 echo.

@@ -43,4 +43,4 @@ build.bat                 # Development build
 distribute.bat           # Release package
 ```
 
-**Version management:** Edit `version.txt` - all files auto-update
+**Version management:** Edit `version.py` - all files auto-update

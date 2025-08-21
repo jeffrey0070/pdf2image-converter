@@ -7,12 +7,8 @@ from PIL import Image
 
 class PDF2ImageConverter:
     def __init__(self):
-        # Read version from centralized file
-        try:
-            with open('version.txt', 'r') as f:
-                version = f.read().strip()
-        except FileNotFoundError:
-            version = "2.0.1"  # fallback
+        # Import version from version.py
+        from version import __version__ as version
         
         self.root = tk.Tk()
         self.root.title(f"PDF to Image Converter v{version} - Jeffrey Wang")
