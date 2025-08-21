@@ -7,8 +7,15 @@ from PIL import Image
 
 class PDF2ImageConverter:
     def __init__(self):
+        # Read version from centralized file
+        try:
+            with open('version.txt', 'r') as f:
+                version = f.read().strip()
+        except FileNotFoundError:
+            version = "2.0.1"  # fallback
+        
         self.root = tk.Tk()
-        self.root.title("PDF to Image Converter v2.0.0 - Jeffrey Wang")
+        self.root.title(f"PDF to Image Converter v{version} - Jeffrey Wang")
         self.root.geometry("450x280")
         self.root.minsize(450, 180)  # Set minimum size
         self.root.configure(bg="#ffffff")
@@ -23,6 +30,8 @@ class PDF2ImageConverter:
         
         # Auto-convert if PDF provided via command line
         if self.pdf_path:
+            # Update display and resize window for command line PDF
+            self.root.after(50, self.update_display_and_resize)
             # Schedule conversion to run after GUI is fully initialized
             self.root.after(100, self.convert_pdf)
             
@@ -111,6 +120,17 @@ class PDF2ImageConverter:
                                        padx=25, pady=10, relief="flat")
         self.convert_button.pack()
 
+    def update_display_and_resize(self):
+        """Update filename display and resize window if needed"""
+        if self.pdf_path:
+            self.drop_text.config(text=f"Click here to browse for PDF file\n\n{self.pdf_path}")
+            # Auto-resize window if needed for long filename
+            self.root.update_idletasks()
+            required_height = self.root.winfo_reqheight()
+            current_height = self.root.winfo_height()
+            if required_height > current_height:
+                self.root.geometry(f"450x{required_height + 15}")
+
     def select_pdf(self):
         file_path = filedialog.askopenfilename(
             title="Select PDF file",
@@ -118,13 +138,7 @@ class PDF2ImageConverter:
         )
         if file_path:
             self.pdf_path = file_path
-            self.drop_text.config(text=f"Click here to browse for PDF file\n\n{file_path}")
-            # Auto-resize window if needed for long filename
-            self.root.update_idletasks()
-            required_height = self.root.winfo_reqheight()
-            current_height = self.root.winfo_height()
-            if required_height > current_height:
-                self.root.geometry(f"450x{required_height + 15}")
+            self.update_display_and_resize()
 
     def convert_pdf(self):
         if not self.pdf_path:
