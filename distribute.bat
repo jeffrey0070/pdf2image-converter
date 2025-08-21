@@ -33,23 +33,17 @@ if not exist "PDF2Image-v%VERSION%.zip" (
 echo ✅ Created: PDF2Image-v%VERSION%.zip
 
 echo.
-echo Step 3: GitHub release options...
-echo [1] Create GitHub release (requires gh CLI)
-echo [2] Skip GitHub release
-set /p CHOICE="Choose option (1 or 2): "
-
-if "%CHOICE%"=="1" (
-    echo.
-    echo Creating GitHub release v%VERSION%...
-    gh release create v%VERSION% "PDF2Image-v%VERSION%.zip" --title "PDF2Image v%VERSION%" --notes "Release v%VERSION%"
-    if %ERRORLEVEL%==0 (
-        echo ✅ GitHub release created successfully
-    ) else (
-        echo ❌ GitHub release failed - check gh CLI setup
-    )
-) else (
-    echo ✅ Zip file ready for manual upload
-)
+echo Step 3: Create GitHub release manually...
+echo.
+echo ✅ Distribution package ready: PDF2Image-v%VERSION%.zip
+echo.
+echo To create GitHub release:
+echo 1. Go to: https://github.com/jeffrey0070/pdf2image-converter/releases
+echo 2. Click "Create a new release"
+echo 3. Tag: v%VERSION%
+echo 4. Title: PDF2Image v%VERSION%
+echo 5. Upload: PDF2Image-v%VERSION%.zip
+echo 6. Click "Publish release"
 
 cd ..
 echo.
